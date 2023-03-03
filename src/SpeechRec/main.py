@@ -21,7 +21,7 @@ def SpeechToText():
     print(response.text)
 
 def TextToSpeech(text):
-    text = text.replace(" ", ".")
+    text = text.replace(" ", ". ")
 
     r = requests.get(ROOT+"/synth",
                  data={"engine": "Iva30",  # Iva30, Jan30
@@ -32,11 +32,11 @@ def TextToSpeech(text):
                  )
     r.raise_for_status()
 
-    with open("output.mp3", "wb") as fw:
+    with open("src/SpeechRec/out/output.mp3", "wb") as fw:
         fw.write(r.content)
 
-    audio = AudioSegment.from_mp3("output.mp3")
+    audio = AudioSegment.from_mp3("src/SpeechRec/out/output.mp3")
     play(audio)
 
-TextToSpeech()
+TextToSpeech("čau, jak se máš?")
 SpeechToText()
