@@ -63,7 +63,7 @@ class Graph:
         # from the adjacent node to node2.
         # The adjacent nodes are the ones in the value lists in 
         # the graph dictionary.        
-        for node in self.__graph[node1]:
+        for node in self.__graph[node1].neighbours:
             if node not in path:
 
                 subpaths = self.all_paths(node, node2, path)
@@ -79,6 +79,7 @@ class Graph:
     # If there are more than one path with the minimum number of nodes,
     # the first one will be returned.
     def shortest_path(self, node1, node2):
+        print(self.all_paths(node1, node2))
         return sorted(self.all_paths(node1, node2), key = len)[0]
 
 
@@ -88,4 +89,4 @@ g = Graph(nodes)
 
 print("The paths from 'a' to 'b':")
 #print(g.all_paths('a', 'b'))
-print("The shortest path: ", g.shortest_path('a', 'f'))
+print("The shortest path: ", g.shortest_path('c', 'e'))
