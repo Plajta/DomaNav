@@ -20,10 +20,10 @@ def TextToSpeech():
                  )
     r.raise_for_status()
 
-    with open("output.mp3", "wb") as fw:
+    with open("src/SpeechRec/out/output.mp3", "wb") as fw:
         fw.write(r.content)
 
-    audio = AudioSegment.from_mp3("output.mp3")
+    audio = AudioSegment.from_mp3("src/SpeechRec/out/output.mp3")
     play(audio)
 
 TextToSpeech()
