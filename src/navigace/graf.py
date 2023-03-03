@@ -1,7 +1,9 @@
+from node import node
+
 class graf:
 
     nodes = {
-    'a': [[x,y][]],
+    'a': node(['b'],"a"),
     'b': ['a'],
     'c': ['d', 'f'],
     'd': ['c', 'e'],
