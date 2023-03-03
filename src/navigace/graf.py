@@ -2,9 +2,9 @@ from node import node
 
 
 nodes = {
-'a': node(['b'],"a"),
+'a': node(['b','c'],"a"),
 'b': node(["a"],"b"),
-'c': node(['d', 'f'],"c"),
+'c': node(['a','d', 'f'],"c"),
 'd': node(['c', 'e'],"d"),
 'e': node(['d'],"e"),
 'f': node(['c'],"f")}
