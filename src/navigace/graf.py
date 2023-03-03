@@ -5,7 +5,7 @@ class graf:
     nodes = {
     'a': node(['b'],"a"),
     'b': node(["a"],"b"),
-    'c': ['d', 'f'],
-    'd': ['c', 'e'],
-    'e': ['d'],
-    'f': ['c']}
+    'c': node(['d', 'f'],"c"),
+    'd': node(['c', 'e'],"d"),
+    'e': node(['d'],"e"),
+    'f': node(['c'],"f")}
