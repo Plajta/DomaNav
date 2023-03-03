@@ -1,5 +1,7 @@
 from requests.auth import HTTPDigestAuth
 import requests
+from pydub import AudioSegment
+from pydub.playback import play
 
 ROOT = "https://services.speechtech.cz/tts/v4"
 USERNAME = "aimtechackathon"
@@ -20,3 +22,8 @@ def TextToSpeech():
 
     with open("output.mp3", "wb") as fw:
         fw.write(r.content)
+
+    audio = AudioSegment.from_mp3("output.mp3")
+    play(audio)
+
+TextToSpeech()
