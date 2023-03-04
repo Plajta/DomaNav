@@ -4,9 +4,10 @@ class node:
     neighbours=[]
     used=False
     name=""
-    def __init__(self, n, x, y) -> None:
+    def __init__(self, n, x, y,name) -> None:
 
         self.neighbours = n
         self.x = x
         self.y = y
+        self.name = name
         pass

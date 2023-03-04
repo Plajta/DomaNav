@@ -1,43 +1,43 @@
 from node import node
 
 
-nodes = {
-'a': node(['b'], 10, 7),
-'b': node(["a"], 10, 14.2),
-'c': node(['d', 'f'], 15.8, 7),
-'d': node(['c', 'e'], 15.8, 14.2),
-'e': node(['d'], 19.4, 14.2),
-'f': node(['c'], 19.4, 7)
-}
 
+nodes = {
+'a': node(['b'], 10, 7,"a"),
+'b': node(["a"], 10, 14.2,"b"),
+'c': node(['d', 'f'], 15.8, 7,"c"),
+'d': node(['c', 'e'], 15.8, 14.2,"d"),
+'e': node(['d'], 19.4, 14.2,"e"),
+'f': node(['c'], 19.4, 7,"f")
+}
 class Graph:
-    __graph = {}
+    _graph = {}
     def __init__(self, graph = {}):
-            self.__graph = graph
+            self._graph = graph
         
     def edges(self):
         return [(node, neighbor) 
-                for node in self.__graph 
-                for neighbor in self.__graph[node]]
+                for node in self._graph 
+                for neighbor in self._graph[node]]
     
     def nodes(self):
-        return list(self.__graph.keys())
+        return list(self._graph.keys())
 
     def isolated_nodes(self):
-        return [node for node in self.__graph if not self.__graph[node]]
+        return [node for node in self._graph if not self._graph[node]]
     
     def add_node(self, node):
-        if node not in self.__graph:
-            self.__graph[node] = []
+        if node not in self._graph:
+            self._graph[node] = []
 
     def add_edge(self, node1, node2):
-        if node1 not in self.__graph:
+        if node1 not in self._graph:
             self.add_node(node1)
-        if node2 not in self.__graph:
+        if node2 not in self._graph:
             self.add_node(node2)
 
-        self.__graph[node1].append(node2)
-        self.__graph[node2].append(node1)
+        self._graph[node1].append(node2)
+        self._graph[node2].append(node1)
 
     # Let's begin with the method that returns all the paths 
     # between two nodes.    
@@ -48,7 +48,7 @@ class Graph:
         path = path + [node1]
         
         # If node1 is not in the graph, the function returns an empty list.
-        if node1 not in self.__graph:
+        if node1 not in self._graph:
             return []
 
         # If node1 and node2 are one and the same node, we can return 
@@ -64,7 +64,7 @@ class Graph:
         # from the adjacent node to node2.
         # The adjacent nodes are the ones in the value lists in 
         # the graph dictionary.        
-        for node in self.__graph[node1].neighbours:
+        for node in self._graph[node1].neighbours:
             if node not in path:
 
                 subpaths = self.all_paths(node, node2, path)
