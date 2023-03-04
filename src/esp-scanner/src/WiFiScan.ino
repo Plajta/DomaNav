@@ -49,7 +49,7 @@ void loop() {
           Serial.print(WiFi.RSSI(i)+100); 
           Serial.print("\n");
           if (i == n-1){
-            Serial.print("\0");
+            Serial.print('\0');
           }
         }
       }
@@ -58,5 +58,5 @@ void loop() {
   //Serial.println("");
 
   // Wait a bit before scanning again
-  delay(500);
+  delay(50);
 }
