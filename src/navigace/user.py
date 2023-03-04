@@ -48,20 +48,24 @@ class user:
         if(self.last_point.name!=target):
             self.next_point = self.graf.shortest_path(self.last_point.name, target)[1]
 
-    def check_angle(self):
-        difer=self.node_ang-self.ang
-        if (abs(difer)>180):
-            difer_final=360-abs(difer)
-            if(difer>0):
-                difer_final*=-1
+    def check_angle(self): 
+        #silena matematika tvori uhly
+        differ=self.node_ang-self.ang
+        if (abs(differ)>180):
+            differ_final=360-abs(differ)
+            if(differ>0):
+                differ_final*=-1
         else:
-            difer_final=difer
+            differ_final=differ
 
-        if (self.node_ang>=45):
+        if (abs(differ_final) > 120):
+            print("Otoc se")
+        elif (differ_final > 30):
+            print("Jdi vpravo")       
+        elif (differ_final < -30 ):
             print("Jdi vlevo")
-        
-        if (self.get_angle(self.old_x, self.old_y) <=-45 and self.get_angle(self.old_x, self.old_y) >= -135):
-            print("Jdi vpravo")
+
+
         
     
 u= user(10,7,0,Graph(nodes),nodes['a'])
