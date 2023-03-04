@@ -75,12 +75,14 @@ def Speechmain(callback = None):
     # VARIABLES
     #
     Command_buffer = []
-    Desired_Data = [["postel", "posteli", "postelí"], #ano, všechno jsem to vyskloňoval...
+
+    Desired_Data = [["postel", "posteli", "postelí", "postele"], #ano, všechno jsem to vyskloňoval...
                     ["stůl", "stolu", "stolem"],
                     ["křeslo", "křesla", "křeslu", "křeslem"],
                     ["televize", "televizi", "televizí"],
                     ["záchod", "záchodu", "záchodě", "záchodem"],
                     ["lednice", "lednici", "lednicí"],
+                    ["kuchyň", "kuchyně", "kuchyní", "kuchyni"],
                     ["koupelna", "koupelny", "koupelně", "koupelnu", "koupelnou"],
                     ["ložnice", "ložnici", "ložnicí"]]
 
@@ -109,5 +111,5 @@ def Speechmain(callback = None):
                 for data in y_data:
                     if data in Command_buffer: #We found desired word!
                         
-                        callback()
+                        #callback()
                         Command_buffer = []
