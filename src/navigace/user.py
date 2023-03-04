@@ -24,6 +24,19 @@ Druhe_NP = {
 'loznice': node(['podkrov_3'], 11.6, 9.9,"loznice"),
 'dets_pok': node(['podkrov_3'], 15, 4.7,"dets_pok")
 }
+Subnotes={
+"postel_zdeněk":node(["obyv_p3"],16.5,10.5,"postel_zdeněk"),
+"židle_zdeněk":node(["obyv_p2"],14.2,5.9,"židle_zdeněk"),
+"zachod":node(["predsin"],6.3,8,"zachod"),
+"křeslo_u_TV":node(["obyv_p3"],14.2,9.5,"křeslo_u_TV"),
+"lednice":node(["kk"],16.5,0.5,"lednice"),
+"jidelni_stul":node(["obyv_p2"],15.8,7,"jidelni_stul"),
+"rohova_sedačka":node(["obyv_p3"],10.5,8.6,"rohova_sedačka"),
+"krbová_kamna":node(["obyv_p3"],9.5,12.3,"krbová_kamna"),
+"konferenční_stolek":node(["obyv_p3"],11,10,"konferenční_stolek"),
+"křeslo":node(["obyv_p2"],12,4.2,"křeslo"),
+"televize":node(["obyv_p3"],12,12.3,"televize")
+}
 
 class user:
     toleration=1
@@ -70,7 +83,7 @@ class user:
             print(point_index+": "+ str(math.sqrt(math.pow(point.x-self.x,2)+math.pow(point.y-self.y,2))))
             if math.sqrt(math.pow(point.x-self.x,2)+math.pow(point.y-self.y,2))<self.toleration:
                 self.last_point=point
-                self.set_dest(self.target)
+                self.set_dest(Subnotes[self.target].neighbours[0])
                 break
         
         if(self.next_point==None):
@@ -82,9 +95,12 @@ class user:
 
 
     def set_dest(self,target):
-        if(self.last_point.name!=target):
+        if(self.last_point.name!=Subnotes[target].neighbours[0]):
             #set destination
-            self.next_point =nodes[self.graf.shortest_path(self.last_point.name, target)[1]]
+            
+            self.next_point = nodes[self.graf.shortest_path(self.last_point.name, Subnotes[target].neighbours[0])[1]]
+        else:
+            self.next_point=Subnotes[target]
 
 
     def check_angle(self): 
@@ -111,7 +127,7 @@ class user:
     def serial_read(self):
         serial = Serial()
         serial.baudrate = 115200
-        serial.port = "COM7"
+        serial.port = "COM3"
         serial.open()
         data = int(serial.readline().decode("ASCII"))
         print(f"data1 = {data}")
@@ -147,8 +163,8 @@ def load_nodes(name):
         
 nodes=Prvni_NP
 
-u= user(6,7,0,Graph(nodes),"garaz")
-while (u.last_point.name!="garaz"):
+u= user(6,7,0,Graph(nodes),"zachod")
+while (u.last_point.name!="zachod"):
     u.update(float(input("x: ")),float(input("y: ")))
     
 

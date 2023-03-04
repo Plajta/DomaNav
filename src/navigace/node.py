@@ -4,7 +4,7 @@ class node:
     neighbours=[]
     used=False
     name=""
-    def __init__(self, n, x, y,name) -> None:
+    def __init__(self, n, x, y,name="") -> None:
 
         self.neighbours = n
         self.x = x
