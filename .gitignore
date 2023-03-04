@@ -112,7 +112,8 @@ venv.bak/
 
 # Spyder project settings
 .spyderproject
-.spyproject
+.spyprojectlicit declaration of function ‘atoi’ [-Wimplicit-function-declaration]
+
 
 # Rope project settings
 .ropeproject
@@ -128,5 +129,10 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
+
+# ---------- SpeechRec ----------
+#src/SpeechRec/out/
+
 wifi.map
 port.conf
+
