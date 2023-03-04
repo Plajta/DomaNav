@@ -130,5 +130,5 @@ dmypy.json
 
 # ---------- SpeechRec ----------
 src/SpeechRec/out/
-#src/SpeechRec/test.py
+src/SpeechRec/test.py
 src/SpeechRec/Test2.py
