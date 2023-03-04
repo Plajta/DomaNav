@@ -4,7 +4,6 @@ from node import node
 from graf import Graph
 from serial import Serial
 
-
 Prvni_NP = {
 'predsin': node(['garaz','obyv_p1'], 6, 5.7,"predsin"),
 'garaz': node(["predsin"], 6,2.4,"garaz"),
@@ -39,6 +38,8 @@ Subnotes={
 }
 
 class user:
+
+
     toleration=1
     next_point=None
     node_ang=0
@@ -145,29 +146,29 @@ class user:
 
 
     
-def load_nodes(name):
-    nodes={}
-    f = open(name)
-    lines = f.readlines()
-    f.close
-    for line in lines:
-        parts=line.split(";")
-        node_name=parts[0]
-        node_x=float(parts[1])
-        node_y=float(parts[2])
-        remains=[]
-        if(parts.__len__>3):
-            for num in range(3,parts.__len__):
-                remains.append(parts[num])
-        nodes.update({node_name:node(remains,node_x,node_y,node_name)})
+    def load_nodes(self,name):
+        nodes={}
+        f = open(name)
+        lines = f.readlines()
+        f.close
+        for line in lines:
+            parts=line.split(";")
+            node_name=parts[0]
+            node_x=float(parts[1])
+            node_y=float(parts[2])
+            remains=[]
+            if(parts.__len__>3):
+                for num in range(3,parts.__len__):
+                    remains.append(parts[num])
+            self.nodes.update({node_name:node(remains,node_x,node_y,node_name)})
 
-        
+
 nodes=Prvni_NP
 
 u= user(6,7,0,Graph(nodes),"zachod")
 while (u.last_point.name!="zachod"):
     u.update(float(input("x: ")),float(input("y: ")))
-    
+
 
 #print(u.next_point)
     
