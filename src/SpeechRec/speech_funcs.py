@@ -19,20 +19,6 @@ PASSWORD = "lu7Eabuu7E"
 # FUNCTIONS
 #
 def SpeechToText(source):
-    """
-    params = {
-        'format': 'plaintext',
-    }
-
-    if mode == "mp3":
-        with open('src/SpeechRec/out/output.mp3', 'rb') as f:
-            data = f.read()
-
-    response = requests.post('https://uwebasr.zcu.cz/api/v1/CLARIN_ASR/CZ', params=params, data=data)
-    response.raise_for_status()
-    
-    print(response.text)
-    """
     Stream = Recognizer.listen(source, phrase_time_limit=4)
 
     Command_args = []
