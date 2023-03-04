@@ -7,7 +7,7 @@ class node:
     def __init__(self, n, x, y,name) -> None:
 
         self.neighbours = n
-        self.x = x
-        self.y = y
+        self.x = y
+        self.y = x
         self.name = name
         pass

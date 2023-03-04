@@ -6,20 +6,9 @@ from serial import Serial
 import threading
 import io
 
-nodes = {
-'a': node(['b','c'], 10, 7,"a"),
-'b': node(["a"], 10, 14.2,"b"),
-'c': node(['a','d', 'f'], 15.8, 7,"c"),
-'d': node(['c', 'e'], 15.8, 14.2,"d"),
-'e': node(['d'], 19.4, 14.2,"e"),
-'f': node(['c'], 19.4, 7,"f")
-}
-
-
-
 Prvni_NP = {
 'predsin': node(['garaz','obyv_p1'], 6, 5.7,"predsin"),
-'garaz': node(["predsin"], 6, 2.4,"garaz"),
+'garaz': node(["predsin"], 6,2.4,"garaz"),
 'obyv_p1': node(['predsin','obyv_p2', 'schody'], 9.5, 5.7,"obyv_p1"),
 'obyv_p2': node(['obyv_p1', 'obyv_p3', 'kk'], 12.8, 5.7,"obyv_p2"),
 'obyv_p3': node(['obyv_p2'], 12.8, 8,"obyv_p3"),
@@ -59,12 +48,13 @@ class user:
         self.update(x,y)
         pass
 
-    def get_angle(self,):
-        #gets the angle of the person from two last known coordinates
+    def get_angle(self):
+        #gets the angle from compass
         self.ang = self.serial_read()
         
     def get_node_angle(self):
-        self.node_ang = np.rad2deg(math.atan2((self.x - self.next_point.x),(self.y - self.next_point.y))) - self.ang
+        #tg^-1 (x1-x2)/(y1-y2) 
+        self.node_ang = np.rad2deg(math.atan2((self.y - self.next_point.y),(self.x - self.next_point.x))) - self.ang
 
     def update(self, new_x, new_y):
         #updates coordinates of the person
@@ -74,7 +64,7 @@ class user:
         self.old_y = self.y
         self.y = new_y
         self.get_angle()
-        print(self.ang)
+        print(f"self angle = {self.ang}")
         
         for point_index in self.last_point.neighbours:
             point=self.graf._graph[point_index]
@@ -90,7 +80,7 @@ class user:
 
     def set_dest(self,target):
         if(self.last_point.name!=target):
-            #print(self.graf.shortest_path(self.last_point.name, target))
+            #set destination
             self.next_point =nodes[self.graf.shortest_path(self.last_point.name, target)[1]]
 
     def check_angle(self): 
@@ -104,37 +94,37 @@ class user:
             differ_final=differ
 
         if (abs(differ_final) > 120):
-            print("Otoc se a jdi k:"+self.next_point.name)
+            print("Otoc se a jdi k:" + self.next_point.name)
         elif (differ_final > 30):
-            print("Jdi vpravo směrem k:"+self.next_point.name)       
+            print("Jdi vpravo směrem k:" + self.next_point.name)       
         elif (differ_final < -30 ):
-            print("Jdi vlevo směrem k:"+self.next_point.name)
+            print("Jdi vlevo směrem k:" + self.next_point.name)
+        #
         print(self.node_ang)
-        print(self.ang)
-        print(differ_final)
+        print("differ final " + str(differ_final))
 
     
     def serial_read(self):
         serial = Serial()
         serial.baudrate = 115200
-        serial.port = "COM3"
+        serial.port = "COM7"
         serial.open()
         data = int(serial.readline().decode("ASCII"))
-        data -(180-(data-180))
+        print(f"data1 = {data}")
+        data = -1*(180-(data-180))
+        #pretekajici uhly jsou sračka
         if(data<-180):
             data+=360
         elif(data>180):
             data-=360
+        
+        print(f"data2 = {data}")
         return data
         
 
 
-
-
     
-
-    
-def loadnodes(name):
+def load_nodes(name):
     nodes={}
     f = open(name)
     lines = f.readlines()
@@ -152,8 +142,8 @@ def loadnodes(name):
 
         
 nodes=Prvni_NP
-u= user(6,5.7,0,Graph(nodes),"kk")
-while (u.last_point.name!="kk"):
+u= user(6.5,7,0,Graph(nodes),"garaz")
+while (u.last_point.name!="garaz"):
     u.update(float(input("x: ")),float(input("y: ")))
     
 
