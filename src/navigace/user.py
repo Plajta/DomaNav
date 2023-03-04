@@ -2,6 +2,9 @@ import numpy as np
 import math
 from node import node
 from graf import Graph
+from serial import Serial
+import threading
+
 nodes = {
 'a': node(['b','c'], 10, 7,"a"),
 'b': node(["a"], 10, 14.2,"b"),
@@ -38,6 +41,7 @@ class user:
     next_point=None
     node_ang=0
     def __init__(self, x, y, ang, graf, target) -> None:
+        self.serial_read()
         self.x = x
         self.y = y
         self.ang = ang
@@ -63,6 +67,7 @@ class user:
 
     def update(self, new_x, new_y):
         #updates coordinates of the person
+        self.serial_read()
         self.old_x = self.x
         self.x = new_x
         self.old_y = self.y
@@ -107,12 +112,29 @@ class user:
         print(self.ang)
         print(differ_final)
 
+    
+    def serial_read(self):
+        serial = Serial()
+        serial.baudrate = 115200
+        serial.port = "COM7"
+        serial.open()
+        data = serial.readline().decode("ASCII")
+        print(f"{data} °")
+
+
+    
+    def start_thread_readSerial(self):
+        # creating thread
+        t1 = threading.Thread(target=self.serial_read,args=10)
+        # starting thread 1
+        t1.start()
 
         
 nodes=Prvni_NP
 u= user(6,5.7,0,Graph(nodes),"kk")
 while (u.last_point.name!="kk"):
     u.update(float(input("x: ")),float(input("y: ")))
+    
 
 #print(u.next_point)
     
