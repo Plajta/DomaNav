@@ -127,3 +127,8 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# ---------- SpeechRec ----------
+src/SpeechRec/out/
+src/SpeechRec/test.py
+src/SpeechRec/Test2.py
