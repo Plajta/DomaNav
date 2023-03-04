@@ -3,8 +3,7 @@ import math
 from node import node
 from graf import Graph
 from serial import Serial
-import threading
-import io
+
 
 Prvni_NP = {
 'predsin': node(['garaz','obyv_p1'], 6, 5.7,"predsin"),
@@ -41,6 +40,7 @@ class user:
             nod=nodes[nodid]
             if point.name=="" or (math.sqrt(math.pow(point.x-self.x,2)+math.pow(point.y-self.y,2)))>((math.sqrt(math.pow(nod.x-self.x,2)+math.pow(nod.y-self.y,2)))):
                 point=nod
+        
         print(point.name)
         self.last_point = point
         self.graf=graf
@@ -58,7 +58,6 @@ class user:
 
     def update(self, new_x, new_y):
         #updates coordinates of the person
-        self.serial_read()
         self.old_x = self.x
         self.x = new_x
         self.old_y = self.y
@@ -73,15 +72,20 @@ class user:
                 self.last_point=point
                 self.set_dest(self.target)
                 break
+        
         if(self.next_point==None):
             self.set_dest(self.target)
+        
         self.get_node_angle()
         self.check_angle()
+
+
 
     def set_dest(self,target):
         if(self.last_point.name!=target):
             #set destination
             self.next_point =nodes[self.graf.shortest_path(self.last_point.name, target)[1]]
+
 
     def check_angle(self): 
         #silena matematika tvori uhly
@@ -142,7 +146,8 @@ def load_nodes(name):
 
         
 nodes=Prvni_NP
-u= user(6.5,7,0,Graph(nodes),"garaz")
+
+u= user(6,7,0,Graph(nodes),"garaz")
 while (u.last_point.name!="garaz"):
     u.update(float(input("x: ")),float(input("y: ")))
     

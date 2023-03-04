@@ -1,15 +1,6 @@
 from node import node
 
 
-
-nodes = {
-'a': node(['b'], 10, 7,"a"),
-'b': node(["a"], 10, 14.2,"b"),
-'c': node(['d', 'f'], 15.8, 7,"c"),
-'d': node(['c', 'e'], 15.8, 14.2,"d"),
-'e': node(['d'], 19.4, 14.2,"e"),
-'f': node(['c'], 19.4, 7,"f")
-}
 class Graph:
     _graph = {}
     def __init__(self, graph = {}):
@@ -82,12 +73,3 @@ class Graph:
     def shortest_path(self, node1, node2):
         print(sorted(self.all_paths(node1, node2), key = len))
         return sorted(self.all_paths(node1, node2), key = len)[0]
-
-
-
-
-#Let’s now use the two methods in our code:
-
-#print("The paths from 'a' to 'b':")
-#print(g.all_paths('a', 'b'))
-#print("The shortest path: ", g.shortest_path('c', 'e'))
