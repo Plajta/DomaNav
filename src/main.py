@@ -5,7 +5,7 @@ from SpeechRec import speech_funcs
 #
 
 #TODO:
-#1) akcelerometr, gyroskop, atd. - andri na tom pracuje
+#1) akcelerometr, gyroskop, atd. - done
 #2) Kam jdeš? - done
 #3) lokalizace - dominik + vašek
 #4) graf - jéňa + karel + zapomněl jsem jméno

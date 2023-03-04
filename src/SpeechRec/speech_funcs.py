@@ -111,5 +111,3 @@ def Speechmain(callback = None):
                         
                         callback()
                         Command_buffer = []
-
-Speechmain()

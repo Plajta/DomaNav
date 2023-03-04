@@ -132,3 +132,4 @@ dmypy.json
 #src/SpeechRec/out/
 src/SpeechRec/test.py
 src/SpeechRec/Test2.py
+src/SpeechRec/luxo_test.py
