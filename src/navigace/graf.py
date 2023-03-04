@@ -2,12 +2,13 @@ from node import node
 
 
 nodes = {
-'a': node(['b','c'],"a"),
-'b': node(["a"],"b"),
-'c': node(['a','d', 'f'],"c"),
-'d': node(['c', 'e'],"d"),
-'e': node(['d'],"e"),
-'f': node(['c'],"f")}
+'a': node(['b'], 10, 7),
+'b': node(["a"], 10, 14.2),
+'c': node(['d', 'f'], 15.8, 7),
+'d': node(['c', 'e'], 15.8, 14.2),
+'e': node(['d'], 19.4, 14.2),
+'f': node(['c'], 19.4, 7)
+}
 
 class Graph:
     __graph = {}
@@ -79,7 +80,6 @@ class Graph:
     # If there are more than one path with the minimum number of nodes,
     # the first one will be returned.
     def shortest_path(self, node1, node2):
-        print(self.all_paths(node1, node2))
         return sorted(self.all_paths(node1, node2), key = len)[0]
 
 
