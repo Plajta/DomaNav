@@ -129,3 +129,4 @@ dmypy.json
 .pyre/
 
 wifi.map
+port.conf

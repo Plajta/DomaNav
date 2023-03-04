@@ -1,11 +1,8 @@
 import serial
 
-class localizator:
-    def __init__ (self):
-        self.port = ""
-        with open('port.conf', encoding="utf-8") as f:
-            self.port = f.read()
-            print(self.port)
+class scanner:
+    def __init__ (self,port="/dev/ttyUSB0"):
+        self.port = port
         ser = serial.Serial(self.port, 115200, timeout=3)
         ser.write(b'r')
         ser.close()
@@ -16,25 +13,31 @@ class localizator:
         ser.write(cmd.encode("ASCII"))
         while True:
             znak = ser.read()
+            #print(znak)
             if znak != b'\x00':
                 scan_output = scan_output + str(znak.decode("ASCII"))
             else:
-                print(scan_output.count('\n'))
+                #print(scan_output.count('\n'))
                 ser.close()
                 break
         ser.close()
-        return scan_output
+        return scan_output[:-1]
 
 
 
-if __name__ == "__main__":
-    mapa = "";
-    locate = localizator()
-    for i in range(2):
+if __name__ == "__main__": # When run as a standalone module it tries to produce a map
+    mapa = ""
+    port = ""
+    with open('port.conf', encoding="utf-8") as f:
+        port = f.read()
+    print(port)
+    locate = scanner(port)
+    for i in range(8):
         input("Stiskni enter pro načtení " + str(i) + " mapy")
-        aktualni = locate.scan('m')
+        aktualni = locate.scan('m') + '\n'
         print (aktualni)
         mapa = mapa + aktualni
     #print(locate.scan())
+    mapa = mapa[:-1]
     with open('wifi.map', 'w', encoding="utf-8") as f:
         f.write(mapa)
