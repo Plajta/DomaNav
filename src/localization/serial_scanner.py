@@ -32,7 +32,7 @@ if __name__ == "__main__": # When run as a standalone module it tries to produce
         port = f.read()
     print(port)
     locate = scanner(port)
-    for i in range(9): #tady se zvyšuje množství zón
+    for i in range(20   ): #tady se zvyšuje množství zón
         input("Stiskni enter pro načtení " + str(i) + " mapy")
         aktualni = locate.scan('m') + '\n'
         print (aktualni)
