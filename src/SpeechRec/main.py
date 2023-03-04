@@ -1,15 +1,15 @@
 from requests.auth import HTTPDigestAuth
 import requests
 import playsound
-import sounddevice as sd
+# import sounddevice as sd
 import pyaudio
-import whisper
+# import whisper
 import speech_recognition as sr
 import io
 import numpy as np
 
 Recognizer = sr.Recognizer()
-model = whisper.load_model("small")
+# model = whisper.load_model("small")
 
 Pyaudio = pyaudio.PyAudio()
 
@@ -78,12 +78,13 @@ def Speechmain(callback = None):
     # VARIABLES
     #
     Command_buffer = []
-    Desired_Data = [["postel", "posteli", "postelí"], #ano, všechno jsem to vyskloňoval...
+    Desired_Data = [["postel", "posteli", "postelí", "postele"], #ano, všechno jsem to vyskloňoval...
                     ["stůl", "stolu", "stolem"],
                     ["křeslo", "křesla", "křeslu", "křeslem"],
                     ["televize", "televizi", "televizí"],
                     ["záchod", "záchodu", "záchodě", "záchodem"],
                     ["lednice", "lednici", "lednicí"],
+                    ["kuchyň", "kuchyně", "kuchyní", "kuchyni"],
                     ["koupelna", "koupelny", "koupelně", "koupelnu", "koupelnou"],
                     ["ložnice", "ložnici", "ložnicí"]]
 
@@ -112,7 +113,8 @@ def Speechmain(callback = None):
                 for data in y_data:
                     if data in Command_buffer: #We found desired word!
                         
-                        callback()
+                        # callback()
+                        print("Eyooooooo!!!")
                         Command_buffer = []
 
 Speechmain()
