@@ -10,6 +10,29 @@ nodes = {
 'e': node(['d'], 19.4, 14.2,"e"),
 'f': node(['c'], 19.4, 7,"f")
 }
+
+
+
+Prvni_NP = {
+'predsin': node(['garaz','obyv_p1'], 6, 5.7,"predsin"),
+'garaz': node(["predsin"], 6, 2.4,"garaz"),
+'obyv_p1': node(['predsin','obyv_p2', 'schody'], 9.5, 5.7,"obyv_p1"),
+'obyv_p2': node(['obyv_p1', 'obyv_p3', 'kk'], 12.8, 5.7,"obyv_p2"),
+'obyv_p3': node(['obyv_p2'], 12.8, 8,"obyv_p3"),
+'kk': node(['obyv_p2'], 14.2, 2.4,"kk")
+}
+
+Druhe_NP = {
+'schody': node(['podkrov_1','pracovna'], 7.1, 3.5,"schody"),
+'podkrov_1': node(['schody','podkrov_2'], 10, 3.5,"podkrov_1"),
+'pracovna': node(['predsin','obyv_p2', 'schody'], 4.6, 3.5,"pracovna"),
+'podkrov_2': node(['koupelna', 'podkrov_3'], 10, 4.7,"podkrov_2"),
+'koupelna': node(['podkrov_2'], 7.1, 4.7,"koupelna"),
+'podkrov_3': node(['loznice', 'dets_pok'], 11.6, 4.7,"podkrov_3"),
+'loznice': node(['podkrov_3'], 11.6, 9.9,"loznice"),
+'dets_pok': node(['podkrov_3'], 15, 4.7,"dets_pok")
+}
+
 class user:
     toleration=1
     next_point=None
