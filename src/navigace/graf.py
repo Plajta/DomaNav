@@ -80,6 +80,7 @@ class Graph:
     # If there are more than one path with the minimum number of nodes,
     # the first one will be returned.
     def shortest_path(self, node1, node2):
+        print(sorted(self.all_paths(node1, node2), key = len))
         return sorted(self.all_paths(node1, node2), key = len)[0]
 
 
