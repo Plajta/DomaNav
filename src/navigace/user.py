@@ -49,7 +49,14 @@ class user:
             self.next_point = self.graf.shortest_path(self.last_point.name, target)[1]
 
     def check_angle(self):
-        if (self.get):
+        difer=self.node_ang-self.ang
+        if (abs(difer)>180):
+            difer_final=360-abs(difer)
+            if(difer>0):
+                difer_final*=-1
+        else:
+            difer_final=difer
+
         if (self.node_ang>=45):
             print("Jdi vlevo")
         
