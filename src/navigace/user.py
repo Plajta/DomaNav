@@ -39,144 +39,142 @@ Subnotes={
 "televize":node(["obyv_p3"],12,12.3,"televize")
 }
 
-"""
 #Bude použito na prezentaci
-TestPrezentace = {
-    "záchod": node([], "záchod"),
-    "ložnice": node([], "ložnice"),
-    "koupelna": node([], "koupelna"),
-    "lednice": node([], "lednice")
+TestPrezentace = { #x, y notation (s21 - xy)
+    "s21": [[2, 1], [1, 1]],
+    "s11": [[1, 1], [1, 2]],
+    "s12": [[1, 2], [1, 3]],
+    "s13": [[1, 3], [1, 4]] #notace: prakticky linked list s nodami jako sektory
 }
-"""
-
-class user:
 
 
-    toleration=1
-    next_point=None
-    node_ang=0
-    def __init__(self, x, y, ang, graf, target="") -> None:
-       
-        self.x = x
-        self.y = y
-        self.ang = ang
-        point = node([],0,0,"")
-        for nodid in nodes:
-            
-            nod=nodes[nodid]
-            if point.name=="" or (math.sqrt(math.pow(point.x-self.x,2)+math.pow(point.y-self.y,2)))>((math.sqrt(math.pow(nod.x-self.x,2)+math.pow(nod.y-self.y,2)))):
-                point=nod
+
+toleration=1
+next_point=None
+node_ang=0
+def __init__(self, x, y, ang, graf, target="") -> None:
+    
+    self.x = x
+    self.y = y
+    self.ang = ang
+    point = node([],0,0,"")
+    for nodid in nodes:
         
-        print(point.name)
-        self.last_point = point
-        self.graf=graf
-        self.target=""
-        self.target=target
-        self.update(x,y)
-        pass
+        nod=nodes[nodid]
+        if point.name=="" or (math.sqrt(math.pow(point.x-self.x,2)+math.pow(point.y-self.y,2)))>((math.sqrt(math.pow(nod.x-self.x,2)+math.pow(nod.y-self.y,2)))):
+            point=nod
+    
+    print(point.name)
+    self.last_point = point
+    self.graf=graf
+    self.target=""
+    self.target=target
+    self.update(x,y)
+    pass
 
-    def get_angle(self):
-        #gets the angle from compass
-        self.ang = self.serial_read()
-        
-    def get_node_angle(self):
-        #tg^-1 (x1-x2)/(y1-y2) 
-        self.node_ang = np.rad2deg(math.atan2((self.y - self.next_point.y),(self.x - self.next_point.x))) - self.ang
+def get_angle(self):
+    #gets the angle from compass
+    self.ang = self.serial_read()
+    
+def get_node_angle(self):
+    #tg^-1 (x1-x2)/(y1-y2) 
+    self.node_ang = np.rad2deg(math.atan2((self.y - self.next_point.y),(self.x - self.next_point.x))) - self.ang
 
-    def update(self, new_x, new_y):
-        #updates coordinates of the person
-        self.old_x = self.x
-        self.x = new_x
-        self.old_y = self.y
-        self.y = new_y
-        self.get_angle()
-        print(f"self angle = {self.ang}")
-        
-        for point_index in self.last_point.neighbours:
-            point=self.graf._graph[point_index]
-            print(point_index+": "+ str(math.sqrt(math.pow(point.x-self.x,2)+math.pow(point.y-self.y,2))))
-            if math.sqrt(math.pow(point.x-self.x,2)+math.pow(point.y-self.y,2))<self.toleration:
-                self.last_point=point
-                self.set_dest(self.target)
-                break
-        
-        if(self.next_point==None):
+def update(self, new_x, new_y):
+    #updates coordinates of the person
+    self.old_x = self.x
+    self.x = new_x
+    self.old_y = self.y
+    self.y = new_y
+    self.get_angle()
+    print(f"self angle = {self.ang}")
+    
+    for point_index in self.last_point.neighbours:
+        point=self.graf._graph[point_index]
+        print(point_index+": "+ str(math.sqrt(math.pow(point.x-self.x,2)+math.pow(point.y-self.y,2))))
+        if math.sqrt(math.pow(point.x-self.x,2)+math.pow(point.y-self.y,2))<self.toleration:
+            self.last_point=point
             self.set_dest(self.target)
-        
-        self.get_node_angle()
-        self.check_angle()
-
-
-
-    def set_dest(self,target=""):
-        if(self.last_point.name!=Subnotes[target].neighbours[0]):
-            #set destination
-            
-            self.next_point = nodes[self.graf.shortest_path(self.last_point.name, Subnotes[target].neighbours[0])[1]]
-        else:
-            self.next_point=Subnotes[target]
-
-
-    def check_angle(self): 
-        #silena matematika tvori uhly
-        differ=self.node_ang
-        if (abs(differ)>180):
-            differ_final=360-abs(differ)
-            if(differ>0):
-                differ_final*=-1
-        else:
-            differ_final=differ
-
-        if (abs(differ_final) > 120):
-            print("Otoc se a jdi k:" + self.next_point.name)
-        elif (differ_final > 30):
-            print("Jdi vpravo směrem k:" + self.next_point.name)       
-        elif (differ_final < -30 ):
-            print("Jdi vlevo směrem k:" + self.next_point.name)
-        #
-        print(self.node_ang)
-        print("differ final " + str(differ_final))
-
+            break
     
-    def serial_read(self):
-        serial = Serial()
-        serial.baudrate = 115200
-        serial.port = "COM3"
-        serial.open()
-        data = int(serial.readline().decode("ASCII"))
-        print(f"data1 = {data}")
-        data = -1*(180-(data-180))
-        #pretekajici uhly jsou sračka
-        if(data<-180):
-            data+=360
-        elif(data>180):
-            data-=360
-        
-        print(f"data2 = {data}")
-        return data
-        
-
-
+    if(self.next_point==None):
+        self.set_dest(self.target)
     
-    def load_nodes(self,name):
-        nodes={}
-        f = open(name)
-        lines = f.readlines()
-        f.close
-        for line in lines:
-            parts=line.split(";")
-            node_name=parts[0]
-            node_x=float(parts[1])
-            node_y=float(parts[2])
-            remains=[]
-            if(parts.__len__>3):
-                for num in range(3,parts.__len__):
-                    remains.append(parts[num])
-            self.nodes.update({node_name:node(remains,node_x,node_y,node_name)})
+    self.get_node_angle()
+    self.check_angle()
+
+
+
+def set_dest(self,target=""):
+    if(self.last_point.name!=Subnotes[target].neighbours[0]):
+        #set destination
+        
+        self.next_point = nodes[self.graf.shortest_path(self.last_point.name, Subnotes[target].neighbours[0])[1]]
+    else:
+        self.next_point=Subnotes[target]
+
+
+def check_angle(self): 
+    #silena matematika tvori uhly
+    differ=self.node_ang
+    if (abs(differ)>180):
+        differ_final=360-abs(differ)
+        if(differ>0):
+            differ_final*=-1
+    else:
+        differ_final=differ
+
+    if (abs(differ_final) > 120):
+        print("Otoc se a jdi k:" + self.next_point.name)
+    elif (differ_final > 30):
+        print("Jdi vpravo směrem k:" + self.next_point.name)       
+    elif (differ_final < -30 ):
+        print("Jdi vlevo směrem k:" + self.next_point.name)
+    #
+    print(self.node_ang)
+    print("differ final " + str(differ_final))
+
+
+def serial_read(self):
+    serial = Serial()
+    serial.baudrate = 115200
+    serial.port = "COM3"
+    serial.open()
+    data = int(serial.readline().decode("ASCII"))
+    print(f"data1 = {data}")
+    data = -1*(180-(data-180))
+    #pretekajici uhly jsou sračka
+    if(data<-180):
+        data+=360
+    elif(data>180):
+        data-=360
+    
+    print(f"data2 = {data}")
+    return data
+    
+
+
+
+def load_nodes(self,name):
+    nodes={}
+    f = open(name)
+    lines = f.readlines()
+    f.close
+    for line in lines:
+        parts=line.split(";")
+        node_name=parts[0]
+        node_x=float(parts[1])
+        node_y=float(parts[2])
+        remains=[]
+        if(parts.__len__>3):
+            for num in range(3,parts.__len__):
+                remains.append(parts[num])
+        self.nodes.update({node_name:node(remains,node_x,node_y,node_name)})
 
 
 nodes=Prvni_NP
-
+""" TODO
 u= user(6,7,0,Graph(nodes),"zachod")
 while (u.last_point.name!="zachod"):
     u.update(float(input("x: ")),float(input("y: ")))
+"""

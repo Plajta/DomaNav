@@ -1,7 +1,7 @@
 #custom imports:
 from SpeechRec import speech_funcs
-import localization
-from navigace import Node, controlAccel, graf#, user TODO: i have to repair that COM3 problem
+from localization import finder
+from navigace import Node, controlAccel, graf, user #TODO: i have to repair that COM3 problem
 import time
 
 #
@@ -24,6 +24,7 @@ Command_buffer = []
 last_deg = 0
 d_deg = 0
 Pass = False
+KamJdesCount = False
 
 Desired_Data = [["postel", "posteli", "postelí", "postele"], #ano, všechno jsem to vyskloňoval...
                 ["stůl", "stolu", "stolem"],
@@ -52,14 +53,15 @@ with speech_funcs.sr.Microphone() as source:
 
         data = controlAccel.GetData(micro_object)
         if data:
-            d_deg = abs(int(last_deg) - int(data.replace("\n", "")))
+            if last_deg != 0:
+                d_deg = abs(int(last_deg) - int(data.replace("\n", "")))
             last_deg = data
         
             print(d_deg)
-            if d_deg > 75:
+            if d_deg > 1 and not KamJdesCount:
                 speech_funcs.PlaySpeech("KamJdes")
-            else:
-                continue
+                KamJdesCount = True
+
             time.sleep(1)
             
             Commands = speech_funcs.SpeechToText(source)
@@ -77,22 +79,16 @@ with speech_funcs.sr.Microphone() as source:
                         if data in Command_buffer: #We found desired word!
                             word = data
 
-                            #locate word (pokoj)
-                            #
-                            #
-                            #
-                            Finder = localization.finder()
-                            position, reg_len = Finder.find()
+                            if word == "lednice": #pro teď budeme používat jenom 1 class
+                                for key in user.TestPrezentace:
+                                    print(key) #TODO: dodělat
+                                Finder = finder()
+                                position, reg_len = Finder.find()
 
-                            #construct best path
-                            #
-                            #
-                            #
+                                #convert path to spoken word
+                                #
+                                #
+                                #
 
-                            #convert path to spoken word
-                            #
-                            #
-                            #
-
-                            #track and repeat
-                            break
+                                #track and repeat
+                                break
