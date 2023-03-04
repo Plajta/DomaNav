@@ -65,3 +65,16 @@ while True:
                 #
                 Finder = finder()
                 position, reg_len = Finder.find()
+
+                #construct best path
+                #
+                #
+                #
+
+                #convert path to spoken word
+                #
+                #
+                #
+
+                #track and repeat
+                break
