@@ -64,6 +64,9 @@ def TextToSpeech(text):
 
     playsound.playsound("src/SpeechRec/out/output.mp3")
 
+def PlaySpeech(audio_name):
+    playsound.playsound("src/SpeechRec/out/" + audio_name + ".mp3")
+
 #
 # MAIN
 #
@@ -72,6 +75,7 @@ def Speechmain(callback = None):
     # VARIABLES
     #
     Command_buffer = []
+
     Desired_Data = [["postel", "posteli", "postelí", "postele"], #ano, všechno jsem to vyskloňoval...
                     ["stůl", "stolu", "stolem"],
                     ["křeslo", "křesla", "křeslu", "křeslem"],
@@ -90,7 +94,7 @@ def Speechmain(callback = None):
     # if "začal se pohybovat:"
     #
     #
-    TextToSpeech("Kam jdeš?")
+    PlaySpeech("KamJdes")
 
     with sr.Microphone() as source:
         Recognizer.adjust_for_ambient_noise(source)
