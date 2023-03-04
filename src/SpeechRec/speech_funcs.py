@@ -1,16 +1,10 @@
 from requests.auth import HTTPDigestAuth
 import requests
 import playsound
-import sounddevice as sd
 import pyaudio
-import whisper
 import speech_recognition as sr
-import io
-import numpy as np
 
 Recognizer = sr.Recognizer()
-model = whisper.load_model("small")
-
 Pyaudio = pyaudio.PyAudio()
 
 #some info
