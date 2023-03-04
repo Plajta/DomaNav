@@ -1,20 +1,12 @@
 from requests.auth import HTTPDigestAuth
 import requests
-from pydub import AudioSegment
-from pydub.playback import play
+import playsound
 import sounddevice as sd
 import pyaudio
 import whisper
 import speech_recognition as sr
 import io
 import numpy as np
-
-#
-# VARIABLES
-#
-ROOT = "https://services.speechtech.cz/tts/v4"
-USERNAME = "aimtechackathon"
-PASSWORD = "lu7Eabuu7E"
 
 Recognizer = sr.Recognizer()
 model = whisper.load_model("small")
@@ -24,6 +16,10 @@ Pyaudio = pyaudio.PyAudio()
 #some info
 info = Pyaudio.get_host_api_info_by_index(0)
 numdevices = info.get('deviceCount')
+
+ROOT = "https://services.speechtech.cz/tts/v4"
+USERNAME = "aimtechackathon"
+PASSWORD = "lu7Eabuu7E"
 
 #
 # FUNCTIONS
@@ -50,7 +46,6 @@ def SpeechToText(source):
         Command_args = Recognizer.recognize_google(Stream, language="cs")
         if type(Command_args) == str:
             Command_args = Command_args.split()
-            print(Command_args)
     except sr.UnknownValueError:
         print("cannot read the stream")
         Command_args = []
@@ -73,23 +68,51 @@ def TextToSpeech(text):
     with open("src/SpeechRec/out/output.mp3", "wb") as fw:
         fw.write(r.content)
 
-    audio = AudioSegment.from_mp3("src/SpeechRec/out/output.mp3")
-    play(audio)
+    playsound.playsound("src/SpeechRec/out/output.mp3")
 
 #
 # MAIN
 #
 def Speechmain(callback = None):
+    #
+    # VARIABLES
+    #
+    Command_buffer = []
+    Desired_Data = [["postel", "posteli", "postelí"], #ano, všechno jsem to vyskloňoval...
+                    ["stůl", "stolu", "stolem"],
+                    ["křeslo", "křesla", "křeslu", "křeslem"],
+                    ["televize", "televizi", "televizí"],
+                    ["záchod", "záchodu", "záchodě", "záchodem"],
+                    ["lednice", "lednici", "lednicí"],
+                    ["koupelna", "koupelny", "koupelně", "koupelnu", "koupelnou"],
+                    ["ložnice", "ložnici", "ložnicí"]]
+
+
     for i in range(0, numdevices):
         if (Pyaudio.get_device_info_by_host_api_device_index(0, i).get('maxInputChannels')) > 0:
             print("Input Device id ", i, " - ", Pyaudio.get_device_info_by_host_api_device_index(0, i).get('name'))
+
+    # if "začal se pohybovat:"
+    #
+    #
+    TextToSpeech("Kam jdeš?")
 
     with sr.Microphone() as source:
         Recognizer.adjust_for_ambient_noise(source)
         while True:
             Commands = SpeechToText(source)
-            if len(Commands) != 0:
-                #callback()
-                pass
+
+            if len(Commands) == 0: #skipoing empty command
+                continue
+
+            Command_buffer.extend(Commands)
+            print(Command_buffer)
+            #nějaké vyhodnocení a nalezení místnosti
+            for y_data in Desired_Data:
+                for data in y_data:
+                    if data in Command_buffer: #We found desired word!
+                        
+                        callback()
+                        Command_buffer = []
 
 Speechmain()
