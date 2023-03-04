@@ -146,7 +146,7 @@ def loadnodes(name):
         if(parts.__len__>3):
             for num in range(3,parts.__len__):
                 remains.append(parts[num])
-        nodes.update({name:node(remains,node_x,node_y,name)})
+        nodes.update({node_name:node(remains,node_x,node_y,node_name)})
 
         
 nodes=Prvni_NP
