@@ -12,6 +12,8 @@ nodes = {
 }
 class user:
     toleration=1
+    next_point=None
+    node_ang=0
     def __init__(self, x, y, ang, graf, last_point) -> None:
         self.x = x
         self.y = y
@@ -35,6 +37,8 @@ class user:
         self.old_y = self.y
         self.y = new_y
         self.get_angle(self.old_x, self.old_y)
+        print(self.ang)
+        
         for point_index in self.last_point.neighbours:
             point=self.graf._graph[point_index]
             print(point_index+": "+ str(math.sqrt(math.pow(point.x-self.x,2)+math.pow(point.y-self.y,2))))
@@ -42,15 +46,18 @@ class user:
                 self.last_point=point
                 self.set_dest("e")
                 break
+        if(self.next_point==None):
+            self.set_dest("e")
+        self.get_node_angle()
         self.check_angle()
 
     def set_dest(self,target):
         if(self.last_point.name!=target):
-            self.next_point = self.graf.shortest_path(self.last_point.name, target)[1]
+            self.next_point =nodes[self.graf.shortest_path(self.last_point.name, target)[1]] 
 
     def check_angle(self): 
         #silena matematika tvori uhly
-        differ=self.node_ang-self.ang
+        differ=self.node_ang
         if (abs(differ)>180):
             differ_final=360-abs(differ)
             if(differ>0):
@@ -64,6 +71,9 @@ class user:
             print("Jdi vpravo")       
         elif (differ_final < -30 ):
             print("Jdi vlevo")
+        print(self.node_ang)
+        print(self.ang)
+        print(differ_final)
 
 
         
