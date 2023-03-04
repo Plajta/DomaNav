@@ -37,13 +37,19 @@ class user:
     toleration=1
     next_point=None
     node_ang=0
-    def __init__(self, x, y, ang, graf, last_point) -> None:
+    def __init__(self, x, y, ang, graf, target) -> None:
         self.x = x
         self.y = y
         self.ang = ang
-        self.last_point = last_point
+        point = node([],0,0,"")
+        for nodid in nodes:
+            nod=nodes[nodid]
+            if(point.x==0 and point.y==0 or (math.sqrt(math.pow(point.x-self.x,2)+math.pow(point.y-self.y,2))))>((math.sqrt(math.pow(nod.x-self.x,2)+math.pow(nod.y-self.y,2)))):
+                point=nod
+            
+        self.last_point = point
         self.graf=graf
-        
+        self.target=target
         pass
 
     def get_angle(self, last_x, last_y):
@@ -67,16 +73,17 @@ class user:
             print(point_index+": "+ str(math.sqrt(math.pow(point.x-self.x,2)+math.pow(point.y-self.y,2))))
             if math.sqrt(math.pow(point.x-self.x,2)+math.pow(point.y-self.y,2))<self.toleration:
                 self.last_point=point
-                self.set_dest("e")
+                self.set_dest(self.target)
                 break
         if(self.next_point==None):
-            self.set_dest("e")
+            self.set_dest(self.target)
         self.get_node_angle()
         self.check_angle()
 
     def set_dest(self,target):
         if(self.last_point.name!=target):
-            self.next_point =nodes[self.graf.shortest_path(self.last_point.name, target)[1]] 
+            
+            self.next_point =nodes[self.graf.shortest_path(self.last_point.name, target)[1]]
 
     def check_angle(self): 
         #silena matematika tvori uhly
@@ -89,20 +96,20 @@ class user:
             differ_final=differ
 
         if (abs(differ_final) > 120):
-            print("Otoc se")
+            print("Otoc se a jdi k:"+self.next_point.name)
         elif (differ_final > 30):
-            print("Jdi vpravo")       
+            print("Jdi vpravo směrem k:"+self.next_point.name)       
         elif (differ_final < -30 ):
-            print("Jdi vlevo")
+            print("Jdi vlevo směrem k:"+self.next_point)
         print(self.node_ang)
         print(self.ang)
         print(differ_final)
 
 
         
-    
-u= user(10,7,0,Graph(nodes),nodes['a'])
-while (u.last_point.name!="e"):
+nodes=Prvni_NP
+u= user(10,7,0,Graph(nodes),"kk")
+while (u.last_point.name!="kk"):
     u.update(float(input("x: ")),float(input("y: ")))
 
 #print(u.next_point)
