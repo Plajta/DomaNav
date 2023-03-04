@@ -31,7 +31,6 @@ class finder:
                 for bssid in out:
                     if(bssid[0]==bssid_in_zone[0]):
                         #print(str(bssid[0])+ ", Síla: " + str(bssid_in_zone[1]) + ", Zóna: " + str(i))
-                        # score[i]+=5
                         score[i]-=abs(int(bssid[1])-int(bssid_in_zone[1]))
         
         score_sorted = score.copy()

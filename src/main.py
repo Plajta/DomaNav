@@ -1,5 +1,8 @@
+#custom imports:
 from SpeechRec import speech_funcs
-from localization import finder, serial_scanner
+import localization
+from navigace import Node, controlAccel, graf#, user TODO: i have to repair that COM3 problem
+import time
 
 #
 # actual code for controlling a human
@@ -18,6 +21,9 @@ from localization import finder, serial_scanner
 # VARIABLES
 #
 Command_buffer = []
+last_deg = 0
+d_deg = 0
+Pass = False
 
 Desired_Data = [["postel", "posteli", "postelí", "postele"], #ano, všechno jsem to vyskloňoval...
                 ["stůl", "stolu", "stolem"],
@@ -39,42 +45,54 @@ for i in range(0, speech_funcs.numdevices):
 # MAIN
 #
 
-source = speech_funcs.sr.Microphone()
-speech_funcs.Recognizer.adjust_for_ambient_noise(source)
-while True:
-    # if "začal se pohybovat:"
-    #
-    #
-    #speech_funcs.PlaySpeech("KamJdes")
+micro_object = controlAccel.setup()
+with speech_funcs.sr.Microphone() as source:
+    speech_funcs.Recognizer.adjust_for_ambient_noise(source)
+    while True:
 
-    Commands = speech_funcs.SpeechToText(source)
-    if len(Commands) == 0: #skipoing empty command
-        continue
+        data = controlAccel.GetData(micro_object)
+        if data:
+            d_deg = abs(int(last_deg) - int(data.replace("\n", "")))
+            last_deg = data
+        
+            print(d_deg)
+            if d_deg > 75:
+                speech_funcs.PlaySpeech("KamJdes")
+            else:
+                continue
+            time.sleep(1)
+            
+            Commands = speech_funcs.SpeechToText(source)
+            if len(Commands) == 0: #skipping empty command
+                continue
+            else:
+                
 
-    Command_buffer.extend(Commands)
-    print(Command_buffer)
-    #nějaké vyhodnocení a nalezení místnosti
-    for y_data in Desired_Data:
-        for data in y_data:
-            if data in Command_buffer: #We found desired word!
-                word = data
+                Command_buffer.extend(Commands)
+                print(Command_buffer)
 
-                #locate word (pokoj)
-                #
-                #
-                #
-                Finder = finder()
-                position, reg_len = Finder.find()
+                #nějaké vyhodnocení a nalezení místnosti
+                for y_data in Desired_Data:
+                    for data in y_data:
+                        if data in Command_buffer: #We found desired word!
+                            word = data
 
-                #construct best path
-                #
-                #
-                #
+                            #locate word (pokoj)
+                            #
+                            #
+                            #
+                            Finder = localization.finder()
+                            position, reg_len = Finder.find()
 
-                #convert path to spoken word
-                #
-                #
-                #
+                            #construct best path
+                            #
+                            #
+                            #
 
-                #track and repeat
-                break
+                            #convert path to spoken word
+                            #
+                            #
+                            #
+
+                            #track and repeat
+                            break

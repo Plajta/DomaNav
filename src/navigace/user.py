@@ -1,8 +1,10 @@
 import numpy as np
 import math
-from node import node
+from navigace.Node import node
 from graf import Graph
 from serial import Serial
+import serial
+import serial.tools.list_ports as list_ports
 
 Prvni_NP = {
 'predsin': node(['garaz','obyv_p1'], 6, 5.7,"predsin"),
@@ -36,6 +38,16 @@ Subnotes={
 "křeslo":node(["obyv_p2"],12,4.2,"křeslo"),
 "televize":node(["obyv_p3"],12,12.3,"televize")
 }
+
+"""
+#Bude použito na prezentaci
+TestPrezentace = {
+    "záchod": node([], "záchod"),
+    "ložnice": node([], "ložnice"),
+    "koupelna": node([], "koupelna"),
+    "lednice": node([], "lednice")
+}
+"""
 
 class user:
 
@@ -168,7 +180,3 @@ nodes=Prvni_NP
 u= user(6,7,0,Graph(nodes),"zachod")
 while (u.last_point.name!="zachod"):
     u.update(float(input("x: ")),float(input("y: ")))
-
-
-#print(u.next_point)
-    

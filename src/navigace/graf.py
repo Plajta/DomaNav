@@ -1,4 +1,4 @@
-from node import node
+from navigace.Node import node
 
 
 class Graph:
