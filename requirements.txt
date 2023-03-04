@@ -1,2 +1,3 @@
-pydub
-openai-whisper
+SpeechRecognition
+playsound
+#you have to install pyaudio via apt
