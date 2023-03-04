@@ -87,6 +87,6 @@ g = Graph(nodes)
 
 #Let’s now use the two methods in our code:
 
-print("The paths from 'a' to 'b':")
+#print("The paths from 'a' to 'b':")
 #print(g.all_paths('a', 'b'))
-print("The shortest path: ", g.shortest_path('c', 'e'))
+#print("The shortest path: ", g.shortest_path('c', 'e'))
