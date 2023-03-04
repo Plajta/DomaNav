@@ -42,7 +42,7 @@ class user:
     toleration=1
     next_point=None
     node_ang=0
-    def __init__(self, x, y, ang, graf, target) -> None:
+    def __init__(self, x, y, ang, graf, target="") -> None:
        
         self.x = x
         self.y = y
@@ -57,6 +57,7 @@ class user:
         print(point.name)
         self.last_point = point
         self.graf=graf
+        self.target=""
         self.target=target
         self.update(x,y)
         pass
@@ -83,7 +84,7 @@ class user:
             print(point_index+": "+ str(math.sqrt(math.pow(point.x-self.x,2)+math.pow(point.y-self.y,2))))
             if math.sqrt(math.pow(point.x-self.x,2)+math.pow(point.y-self.y,2))<self.toleration:
                 self.last_point=point
-                self.set_dest(Subnotes[self.target].neighbours[0])
+                self.set_dest(self.target)
                 break
         
         if(self.next_point==None):
@@ -94,7 +95,7 @@ class user:
 
 
 
-    def set_dest(self,target):
+    def set_dest(self,target=""):
         if(self.last_point.name!=Subnotes[target].neighbours[0]):
             #set destination
             
