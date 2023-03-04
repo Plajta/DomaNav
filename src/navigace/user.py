@@ -4,6 +4,7 @@ from node import node
 from graf import Graph
 from serial import Serial
 import threading
+import io
 
 nodes = {
 'a': node(['b','c'], 10, 7,"a"),
@@ -128,6 +129,24 @@ class user:
         t1 = threading.Thread(target=self.serial_read,args=10)
         # starting thread 1
         t1.start()
+    
+
+    
+def loadnodes(name):
+    nodes={}
+    f = open(name)
+    lines = f.readlines()
+    f.close
+    for line in lines:
+        parts=line.split(";")
+        node_name=parts[0]
+        node_x=float(parts[1])
+        node_y=float(parts[2])
+        remains=[]
+        if(parts.__len__>3):
+            for num in range(3,parts.__len__):
+                remains.append(parts[num])
+        nodes.update({name:node(remains,node_x,node_y,name)})
 
         
 nodes=Prvni_NP
