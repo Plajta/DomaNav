@@ -1,4 +1,5 @@
 from SpeechRec import speech_funcs
+from localization import finder, serial_scanner
 
 #
 # actual code for controlling a human
@@ -62,3 +63,5 @@ while True:
                 #
                 #
                 #
+                Finder = finder()
+                position, reg_len = Finder.find()
