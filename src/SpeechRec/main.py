@@ -7,14 +7,28 @@ import pyaudio
 import whisper
 import speech_recognition as sr
 import io
+import numpy as np
 
+#
+# VARIABLES
+#
 ROOT = "https://services.speechtech.cz/tts/v4"
 USERNAME = "aimtechackathon"
 PASSWORD = "lu7Eabuu7E"
 
 Recognizer = sr.Recognizer()
+model = whisper.load_model("small")
 
-def SpeechToText():
+Pyaudio = pyaudio.PyAudio()
+
+#some info
+info = Pyaudio.get_host_api_info_by_index(0)
+numdevices = info.get('deviceCount')
+
+#
+# FUNCTIONS
+#
+def SpeechToText(source):
     """
     params = {
         'format': 'plaintext',
@@ -29,20 +43,7 @@ def SpeechToText():
     
     print(response.text)
     """
-    """
-    model = whisper.load_model("small")
-    audio = whisper.load_audio("src/SpeechRec/out/output.mp3")
-    audio = whisper.pad_or_trim(audio)
-
-    # make log-Mel spectrogram and move to the same device as the model
-    mel = whisper.log_mel_spectrogram(audio).to(model.device)
-    options = whisper.DecodingOptions(language = "cs", fp16 = False)
-
-    result = whisper.decode(model, mel, options)
-    print(result.text)
-    """
-
-    Stream = Recognizer.listen(source)
+    Stream = Recognizer.listen(source, phrase_time_limit=4)
 
     Command_args = []
     try:
@@ -54,7 +55,7 @@ def SpeechToText():
         print("cannot read the stream")
         Command_args = []
 
-    return Command_args
+    return Command_args 
 
 def TextToSpeech(text):
     text = text.replace(" ", ". ")
@@ -75,22 +76,20 @@ def TextToSpeech(text):
     audio = AudioSegment.from_mp3("src/SpeechRec/out/output.mp3")
     play(audio)
 
-Pyaudio = pyaudio.PyAudio()
+#
+# MAIN
+#
+def Speechmain(callback = None):
+    for i in range(0, numdevices):
+        if (Pyaudio.get_device_info_by_host_api_device_index(0, i).get('maxInputChannels')) > 0:
+            print("Input Device id ", i, " - ", Pyaudio.get_device_info_by_host_api_device_index(0, i).get('name'))
 
-#TextToSpeech("Jdu do ložnice")
-#SpeechToText()
+    with sr.Microphone() as source:
+        Recognizer.adjust_for_ambient_noise(source)
+        while True:
+            Commands = SpeechToText(source)
+            if len(Commands) != 0:
+                #callback()
+                pass
 
-#some info
-info = Pyaudio.get_host_api_info_by_index(0)
-numdevices = info.get('deviceCount')
-
-for i in range(0, numdevices):
-    if (Pyaudio.get_device_info_by_host_api_device_index(0, i).get('maxInputChannels')) > 0:
-        print("Input Device id ", i, " - ", Pyaudio.get_device_info_by_host_api_device_index(0, i).get('name'))
-
-with sr.Microphone() as source:
-    Recognizer.adjust_for_ambient_noise(source)
-    while True:
-        Commands = SpeechToText()
-        if len(Commands) != 0:
-            pass
+Speechmain()
