@@ -42,7 +42,7 @@ class user:
     next_point=None
     node_ang=0
     def __init__(self, x, y, ang, graf, target) -> None:
-        self.serial_read()
+       
         self.x = x
         self.y = y
         self.ang = ang
@@ -59,9 +59,9 @@ class user:
         self.update(x,y)
         pass
 
-    def get_angle(self, last_x, last_y):
+    def get_angle(self,):
         #gets the angle of the person from two last known coordinates
-        self.ang = np.rad2deg(math.atan2((last_x-self.x),(last_y-self.y)))
+        self.ang = self.serial_read()
         
     def get_node_angle(self):
         self.node_ang = np.rad2deg(math.atan2((self.x - self.next_point.x),(self.y - self.next_point.y))) - self.ang
@@ -73,7 +73,7 @@ class user:
         self.x = new_x
         self.old_y = self.y
         self.y = new_y
-        self.get_angle(self.old_x, self.old_y)
+        self.get_angle()
         print(self.ang)
         
         for point_index in self.last_point.neighbours:
@@ -117,18 +117,20 @@ class user:
     def serial_read(self):
         serial = Serial()
         serial.baudrate = 115200
-        serial.port = "COM7"
+        serial.port = "COM3"
         serial.open()
-        data = serial.readline().decode("ASCII")
-        print(f"{data} °")
+        data = int(serial.readline().decode("ASCII"))
+        data -(180-(data-180))
+        if(data<-180):
+            data+=360
+        elif(data>180):
+            data-=360
+        return data
+        
 
 
-    
-    def start_thread_readSerial(self):
-        # creating thread
-        t1 = threading.Thread(target=self.serial_read,args=10)
-        # starting thread 1
-        t1.start()
+
+
     
 
     
