@@ -70,15 +70,13 @@ with speech_funcs.sr.Microphone() as source:
         if data:
             data = int(data.rstrip("\n"))
             if last_deg != 0:
-                d_deg = abs(int(float(last_deg)) - int(float(data))) #literally useless to do, but always drops an error about newline
+                d_deg = abs(int(float(last_deg)) - int(float(data))) * 10 #literally useless to do, but always drops an error about newline
             last_deg = data
         
             print(d_deg)
-            if d_deg > 1 and not KamJdesCount:
+            if d_deg > 15 and not KamJdesCount:
                 speech_funcs.PlaySpeech("KamJdes")
                 KamJdesCount = True
-
-            time.sleep(1)
             
             Commands = speech_funcs.SpeechToText(source)
             if len(Commands) == 0: #skipping empty command

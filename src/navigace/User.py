@@ -95,7 +95,8 @@ class user:
         print(f"self angle = {self.ang}")
         
         print(self.last_point.neighbours)
-        for point_index in [self.last_point.neighbours]:
+        for point_index in self.last_point.neighbours:
+            print(self.last_point.neighbours)
             point=self.graf._graph[point_index]
             print(point_index+": "+ str(math.sqrt(math.pow(point.x-self.x,2)+math.pow(point.y-self.y,2))))
             if math.sqrt(math.pow(point.x-self.x,2)+math.pow(point.y-self.y,2))<self.toleration:
