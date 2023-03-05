@@ -1,7 +1,7 @@
 #custom imports:
 from SpeechRec import speech_funcs
 from localization import finder
-from navigace import node, controlAccel, Graph, user, nodes #TODO: i have to repair that COM3 problem
+from navigace import Node, User, controlAccel, graf #TODO: i have to repair that COM3 problem
 import time
 import math
 
@@ -39,6 +39,15 @@ Desired_Data = {
     "ložnice": ["ložnice", "ložnici", "ložnicí"]
 }
 
+TestPrezentace = {
+                    "s21" : Node.node("s11", 2, 1, "s21"),
+                    "s11" : Node.node("s12", 1, 1, "s11"),
+                    "s12" : Node.node("s13", 1, 2, "s12"),
+                    "s13" : Node.node("lednice", 1, 3, "s13")
+                }
+
+User.nodes = TestPrezentace
+
 
 for i in range(0, speech_funcs.numdevices):
     if (speech_funcs.Pyaudio.get_device_info_by_host_api_device_index(0, i).get('maxInputChannels')) > 0:
@@ -60,7 +69,7 @@ with speech_funcs.sr.Microphone() as source:
         data = controlAccel.GetData(micro_object)
         if data:
             if last_deg != 0:
-                d_deg = abs(int(last_deg) - int(data.replace("\n", " ")))
+                d_deg = abs(int(last_deg) - int(float(data)))
             last_deg = data
         
             print(d_deg)
@@ -91,6 +100,7 @@ with speech_funcs.sr.Microphone() as source:
                             position=f.find()
                             if word == "lednice": #pro teď budeme používat jenom 1 class
 
+
                                 TestPrezentace = {
                                     "s21" : node("s11", 2, 1, "s21"),
                                     "s11" : node("s12", 1, 1, "s11"),
@@ -115,6 +125,7 @@ with speech_funcs.sr.Microphone() as source:
                                         speech_funcs.PlaySpeech("OtocSeDoleva")
                                     else:
                                         speech_funcs.PlaySpeech("JdiRovne")
+
                                     """
                                     d_y1 = loc_pred[1] - loc_now[1] # - to left, + to right
                                     d_x1 = loc_pred[0] - loc_now[0]
@@ -150,7 +161,7 @@ with speech_funcs.sr.Microphone() as source:
                                         speech_funcs.PlaySpeech("OtocSeDoprava")
                                     """
                                     time.sleep(0.5)
-                                    loc_last = user.TestPrezentace[key][0]
+                                    loc_last = User.user.TestPrezentace[key][0]
 
                                 
                                 position = f.find()
