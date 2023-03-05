@@ -6,8 +6,8 @@ f = finder()
 index, len = f.find()
 
 img = np.zeros((400,500))
-x = index%4
-y = index//5
+x = index//5
+y = index%5
 x *= 100
 y *= 100
 print("X: "+str(x)+" Y: "+str(y))
