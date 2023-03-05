@@ -1,7 +1,7 @@
 #custom imports:
 from SpeechRec import speech_funcs
 from localization import finder
-from navigace import Node, controlAccel, graf, user #TODO: i have to repair that COM3 problem
+from navigace import node, controlAccel, Graph, user, nodes #TODO: i have to repair that COM3 problem
 import time
 
 #
@@ -86,12 +86,23 @@ with speech_funcs.sr.Microphone() as source:
                             loc_last = [0, 0]
 
                             if word == "lednice": #pro teď budeme používat jenom 1 class
+
+                                TestPrezentace = {
+                                    "s21" : node("s11", 2, 1, "s21"),
+                                    "s11" : node("s12", 1, 1, "s11"),
+                                    "s12" : node("s13", 1, 2, "s12"),
+                                    "s13" : node("lednice", 1, 3, "s13")
+                                }
+                                u= user(6,7,0,Graph(TestPrezentace),"lednice")
                                 for key in user.TestPrezentace:
                                     print("ano")
 
+
                                     loc_now = user.TestPrezentace[key][0]
                                     loc_pred = user.TestPrezentace[key][1]
-
+                                    u.update()
+                                    u.check
+                                    """
                                     d_y1 = loc_pred[1] - loc_now[1] # - to left, + to right
                                     d_x1 = loc_pred[0] - loc_now[0]
 
@@ -99,6 +110,7 @@ with speech_funcs.sr.Microphone() as source:
                                     d_x2 = loc_now[0] - loc_last[0]
 
                                     #on X axis
+                                    
                                     if (d_x1 < 0 or d_x1 > 0) and (d_x2 < 0 or d_x1 > 0):
                                         #transport relatively forward
                                         speech_funcs.PlaySpeech("JdiRovne")
@@ -123,7 +135,7 @@ with speech_funcs.sr.Microphone() as source:
                                     if d_y1 < 0 and d_x1 > 0:
                                         #transport forward and to right
                                         speech_funcs.PlaySpeech("OtocSeDoprava")
-
+                                    """
                                     time.sleep(0.5)
                                     loc_last = user.TestPrezentace[key][0]
 

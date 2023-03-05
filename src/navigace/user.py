@@ -38,7 +38,7 @@ Subnotes={
 "křeslo":node(["obyv_p2"],12,4.2,"křeslo"),
 "televize":node(["obyv_p3"],12,12.3,"televize")
 }
-
+"""
 #Bude použito na prezentaci
 TestPrezentace = { #x, y notation (s21 - xy)
     "s21": [[2, 1], [1, 1]],
@@ -46,7 +46,7 @@ TestPrezentace = { #x, y notation (s21 - xy)
     "s12": [[1, 2], [1, 3]],
     "s13": [[1, 3], [1, 4]] #notace: prakticky linked list s nodami jako sektory
 }
-
+"""
 
 
 toleration=1
@@ -126,10 +126,15 @@ def check_angle(self):
 
     if (abs(differ_final) > 120):
         print("Otoc se a jdi k:" + self.next_point.name)
+        return 1
     elif (differ_final > 30):
-        print("Jdi vpravo směrem k:" + self.next_point.name)       
+        print("Jdi vpravo směrem k:" + self.next_point.name)   
+        return 2    
     elif (differ_final < -30 ):
         print("Jdi vlevo směrem k:" + self.next_point.name)
+        return 3
+    else:
+        return 4
     #
     print(self.node_ang)
     print("differ final " + str(differ_final))
@@ -171,8 +176,6 @@ def load_nodes(self,name):
                 remains.append(parts[num])
         self.nodes.update({node_name:node(remains,node_x,node_y,node_name)})
 
-
-nodes=Prvni_NP
 """ TODO
 u= user(6,7,0,Graph(nodes),"zachod")
 while (u.last_point.name!="zachod"):
