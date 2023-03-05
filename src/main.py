@@ -1,7 +1,7 @@
 #custom imports:
 from SpeechRec import speech_funcs
 from localization import finder
-from navigace import Node, controlAccel, graf, user #TODO: i have to repair that COM3 problem
+from navigace import Node, User, controlAccel, graf #TODO: i have to repair that COM3 problem
 import time
 
 #
@@ -64,7 +64,7 @@ with speech_funcs.sr.Microphone() as source:
         data = controlAccel.GetData(micro_object)
         if data:
             if last_deg != 0:
-                d_deg = abs(int(last_deg) - int(data.replace("\n", " ")))
+                d_deg = abs(int(last_deg) - int(float(data)))
             last_deg = data
         
             print(d_deg)
@@ -94,13 +94,13 @@ with speech_funcs.sr.Microphone() as source:
                             loc_last = [0, 0]
 
                             if word == "lednice": #pro teď budeme používat jenom 1 class
-                                u= user(6,7,0,graf.Graph(TestPrezentace),"lednice")
-                                for key in user.TestPrezentace:
+                                u= User.user(6,7,0,graf.Graph(TestPrezentace),"lednice")
+                                for key in User.user.TestPrezentace:
                                     print("ano")
 
 
-                                    loc_now = user.TestPrezenta3ce[key][0]
-                                    loc_pred = user.TestPrezentace[key][1]
+                                    loc_now = User.user.TestPrezenta3ce[key][0]
+                                    loc_pred = User.user.TestPrezentace[key][1]
                                     u.update()
                                     u.check
                                     """
@@ -138,7 +138,7 @@ with speech_funcs.sr.Microphone() as source:
                                         speech_funcs.PlaySpeech("OtocSeDoprava")
                                     """
                                     time.sleep(0.5)
-                                    loc_last = user.TestPrezentace[key][0]
+                                    loc_last = User.user.TestPrezentace[key][0]
 
                                 Finder = finder()
                                 position, reg_len = Finder.find()
