@@ -45,6 +45,7 @@ TestPrezentace = {
                     "s13" : Node.node("lednice", 1, 3, "s13")
                 }
 
+User.nodes = TestPrezentace
 
 
 for i in range(0, speech_funcs.numdevices):
