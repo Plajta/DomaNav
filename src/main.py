@@ -79,9 +79,49 @@ with speech_funcs.sr.Microphone() as source:
                         if data in Command_buffer: #We found desired word!
                             word = data
 
+                            loc_last = [0, 0]
+
                             if word == "lednice": #pro teď budeme používat jenom 1 class
                                 for key in user.TestPrezentace:
-                                    print(key) #TODO: dodělat
+
+                                    loc_now = user.TestPrezentace[key][0]
+                                    loc_pred = user.TestPrezentace[key][1]
+
+                                    d_y1 = loc_pred[1] - loc_now[1] # - to left, + to right
+                                    d_x1 = loc_pred[0] - loc_now[0]
+
+                                    d_y2 = loc_now[1] - loc_last[1]
+                                    d_x2 = loc_now[0] - loc_last[0]
+
+                                    #on X axis
+                                    if (d_x1 < 0 or d_x1 > 0) and (d_x2 < 0 or d_x1 > 0):
+                                        #transport relatively forward
+                                        speech_funcs.PlaySpeech("JdiRovne")
+
+                                    if d_x1 < 0 and d_y1 < 0:
+                                        #transport forward and to left
+                                        speech_funcs.PlaySpeech("OtocSeDoleva")
+
+                                    if d_x1 < 0 and d_y1 > 0:
+                                        #transport forward and to right
+                                        speech_funcs.PlaySpeech("OtocSeDoprava")
+
+                                    #on Y axis
+                                    if (d_y1 < 0 or d_y1 > 0) and (d_y2 < 0 or d_y1 > 0):
+                                        #transport relatively forward (i guess, TODO)
+                                        speech_funcs.PlaySpeech("JdiRovne")
+
+                                    if d_y1 < 0 and d_x1 < 0:
+                                        #transport forward and to left
+                                        speech_funcs.PlaySpeech("OtocSeDoleva")
+
+                                    if d_y1 < 0 and d_x1 > 0:
+                                        #transport forward and to right
+                                        speech_funcs.PlaySpeech("OtocSeDoprava")
+
+                                    time.sleep(0.5)
+                                    loc_last = user.TestPrezentace[key][0]
+
                                 Finder = finder()
                                 position, reg_len = Finder.find()
 
