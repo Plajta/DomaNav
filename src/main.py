@@ -3,6 +3,7 @@ from SpeechRec import speech_funcs
 from localization import finder
 from navigace import Node, User, controlAccel, graf #TODO: i have to repair that COM3 problem
 import time
+import math
 
 #
 # actual code for controlling a human
@@ -56,10 +57,13 @@ for i in range(0, speech_funcs.numdevices):
 #
 # MAIN
 #
-
+mapsize=5
 micro_object = controlAccel.setup()
 with speech_funcs.sr.Microphone() as source:
     speech_funcs.Recognizer.adjust_for_ambient_noise(source)
+    f = finder.finder("../../wifi.map")
+    position=[0,20]
+    loc_last = [0, 0]
     while True:
 
         data = controlAccel.GetData(micro_object)
@@ -94,12 +98,34 @@ with speech_funcs.sr.Microphone() as source:
                             word = data
 
                             loc_last = [0, 0]
-
+                            position=f.find()
                             if word == "lednice": #pro teď budeme používat jenom 1 class
-                                u= User.user(6,7,0,graf.Graph(TestPrezentace),"lednice")
+
+
+                                TestPrezentace = {
+                                    "s21" : Node.node("s11", 2, 1, "s21"),
+                                    "s11" : Node.node("s12", 1, 1, "s11"),
+                                    "s12" : Node.node("s13", 1, 2, "s12"),
+                                    "s13" : Node.node("lednice", 1, 3, "s13")
+                                }
+                                u= User.user(loc_last[0],loc_last[1],0,graf.Graph(TestPrezentace),"lednice")
                                 for key in User.user.TestPrezentace:
                                     print("ano")
 
+                                    loc_now=[]
+                                    loc_now[0] = math.fmod(position[0],mapsize)
+                                    loc_now[1]=position[0]-loc_now[0]
+                                    
+                                    u.update(loc_now[0],loc_now[1])
+                                    i= u.check_angle()
+                                    if(i==1):
+                                        speech_funcs.PlaySpeech("TamNe")
+                                    elif(i==2):
+                                        speech_funcs.PlaySpeech("OtocSeDoprava")
+                                    elif(i==3):
+                                        speech_funcs.PlaySpeech("OtocSeDoleva")
+                                    else:
+                                        speech_funcs.PlaySpeech("JdiRovne")
 
                                     loc_now = User.user.TestPrezentace[key][0]
                                     loc_pred = User.user.TestPrezentace[key][1]
@@ -142,8 +168,8 @@ with speech_funcs.sr.Microphone() as source:
                                     time.sleep(0.5)
                                     loc_last = User.user.TestPrezentace[key][0]
 
-                                Finder = finder()
-                                position, reg_len = Finder.find()
+                                
+                                position = f.find()
 
                                 #track and repeat
                                 break
