@@ -20,25 +20,9 @@ void loop() {
   // WiFi.scanNetworks will return the number of networks found
   while (Serial.available()){
     char command = Serial.read();
-    if (command == 'm'){
-      oblast++;
-      Serial.print("oblast;");
-      Serial.println(oblast);
-      int n = WiFi.scanNetworks();
-      if (n > 0){
-        for (int i = 0; i < n; ++i){
-          Serial.print(WiFi.BSSIDstr(i));
-          Serial.print(";");
-          Serial.print(WiFi.RSSI(i)+100); 
-          Serial.print("\n");
-          if (i == n-1){
-            Serial.print('\0');
-          }
-        }
-      }
-    }
-    else if (command == 'r'){
-      oblast = 0;
+    if (command == 'p'){
+      Serial.println("wifi\n");
+      Serial.print('\0');
     }
     else if (command == 'u'){
       int n = WiFi.scanNetworks();
