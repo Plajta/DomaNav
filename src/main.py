@@ -102,13 +102,13 @@ with speech_funcs.sr.Microphone() as source:
 
 
                                 TestPrezentace = {
-                                    "s21" : node("s11", 2, 1, "s21"),
-                                    "s11" : node("s12", 1, 1, "s11"),
-                                    "s12" : node("s13", 1, 2, "s12"),
-                                    "s13" : node("lednice", 1, 3, "s13")
+                                    "s21" : Node.node("s11", 2, 1, "s21"),
+                                    "s11" : Node.node("s12", 1, 1, "s11"),
+                                    "s12" : Node.node("s13", 1, 2, "s12"),
+                                    "s13" : Node.node("lednice", 1, 3, "s13")
                                 }
-                                u= user(loc_last[0],loc_last[1],0,Graph(TestPrezentace),"lednice")
-                                for key in user.TestPrezentace:
+                                u= User.user(loc_last[0],loc_last[1],0,graf.Graph(TestPrezentace),"lednice")
+                                for key in User.user.TestPrezentace:
                                     print("ano")
 
                                     loc_now=[]
