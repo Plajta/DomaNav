@@ -1,7 +1,7 @@
 #custom imports:
 from SpeechRec import speech_funcs
 from localization import finder
-from navigace import node, controlAccel, Graph, user, nodes #TODO: i have to repair that COM3 problem
+from navigace import Node, controlAccel, graf, user #TODO: i have to repair that COM3 problem
 import time
 
 #
@@ -37,6 +37,14 @@ Desired_Data = {
     "koupelna": ["koupelna", "koupelny", "koupelně", "koupelnu", "koupelnou"],
     "ložnice": ["ložnice", "ložnici", "ložnicí"]
 }
+
+TestPrezentace = {
+                    "s21" : Node.node("s11", 2, 1, "s21"),
+                    "s11" : Node.node("s12", 1, 1, "s11"),
+                    "s12" : Node.node("s13", 1, 2, "s12"),
+                    "s13" : Node.node("lednice", 1, 3, "s13")
+                }
+
 
 
 for i in range(0, speech_funcs.numdevices):
@@ -86,19 +94,12 @@ with speech_funcs.sr.Microphone() as source:
                             loc_last = [0, 0]
 
                             if word == "lednice": #pro teď budeme používat jenom 1 class
-
-                                TestPrezentace = {
-                                    "s21" : node("s11", 2, 1, "s21"),
-                                    "s11" : node("s12", 1, 1, "s11"),
-                                    "s12" : node("s13", 1, 2, "s12"),
-                                    "s13" : node("lednice", 1, 3, "s13")
-                                }
-                                u= user(6,7,0,Graph(TestPrezentace),"lednice")
+                                u= user(6,7,0,graf.Graph(TestPrezentace),"lednice")
                                 for key in user.TestPrezentace:
                                     print("ano")
 
 
-                                    loc_now = user.TestPrezentace[key][0]
+                                    loc_now = user.TestPrezenta3ce[key][0]
                                     loc_pred = user.TestPrezentace[key][1]
                                     u.update()
                                     u.check

@@ -48,6 +48,7 @@ TestPrezentace = { #x, y notation (s21 - xy)
 }
 """
 
+nodes = None #setup in main
 
 toleration=1
 next_point=None
