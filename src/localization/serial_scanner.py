@@ -5,16 +5,17 @@ class scanner:
         self.port = port
         ser = serial.Serial(self.port, 115200, timeout=3)
         ser.write(b'r')
+        self.type = self.get_type()
         ser.close()
 
-    def scan (self,cmd='u'):
+    def scan (self):
         scan_output = ""
         ser = serial.Serial(self.port, 115200, timeout=3)
-        ser.write(cmd.encode("ASCII"))
+        ser.write(b'u')
         while True:
             znak = ser.read()
-            print(znak)
-            if znak != b'\x00':
+            #print(znak)
+            if znak != b'@':
                 scan_output = scan_output + str(znak.decode("ASCII"))
             else:
                 #print(scan_output.count('\n'))
@@ -22,6 +23,22 @@ class scanner:
                 break
         ser.close()
         return scan_output[:-1]
+
+    def get_type (self):
+        type = ""
+        ser = serial.Serial(self.port, 115200, timeout=3)
+        ser.write(b'p')
+        while True:
+            znak = ser.read()
+            #print(znak)
+            if znak != b'@':
+                type = type + str(znak.decode("ASCII"))
+            else:
+                #print(scan_output.count('\n'))
+                ser.close()
+                break
+        ser.close()
+        return type
 
 
 
