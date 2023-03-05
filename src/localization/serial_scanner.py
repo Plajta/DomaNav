@@ -13,7 +13,7 @@ class scanner:
         ser.write(cmd.encode("ASCII"))
         while True:
             znak = ser.read()
-            #print(znak)
+            print(znak)
             if znak != b'\x00':
                 scan_output = scan_output + str(znak.decode("ASCII"))
             else:
@@ -34,8 +34,9 @@ if __name__ == "__main__": # When run as a standalone module it tries to produce
     locate = scanner(port)
     for i in range(20   ): #tady se zvyšuje množství zón
         input("Stiskni enter pro načtení " + str(i) + " mapy")
-        aktualni = locate.scan('m') + '\n'
-        print (aktualni)
+        aktualni = f"oblast;{str(i+1)}\n"
+        aktualni = aktualni + locate.scan() + '\n'
+        print(aktualni)
         mapa = mapa + aktualni
     #print(locate.scan())
     mapa = mapa[:-1]
