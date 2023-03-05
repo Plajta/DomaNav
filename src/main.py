@@ -26,15 +26,17 @@ d_deg = 0
 Pass = False
 KamJdesCount = False
 
-Desired_Data = [["postel", "posteli", "postelí", "postele"], #ano, všechno jsem to vyskloňoval...
-                ["stůl", "stolu", "stolem"],
-                ["křeslo", "křesla", "křeslu", "křeslem"],
-                ["televize", "televizi", "televizí"],
-                ["záchod", "záchodu", "záchodě", "záchodem"],
-                ["lednice", "lednici", "lednicí"],
-                ["kuchyň", "kuchyně", "kuchyní", "kuchyni"],
-                ["koupelna", "koupelny", "koupelně", "koupelnu", "koupelnou"],
-                ["ložnice", "ložnici", "ložnicí"]]
+Desired_Data = {
+    "postel": ["postel", "posteli", "postelí", "postele"],
+    "stůl": ["stůl", "stolu", "stolem"],
+    "křeslo": ["křeslo", "křesla", "křeslu", "křeslem"],
+    "televize": ["televize", "televizi", "televizí"],
+    "záchod":  ["záchod", "záchodu", "záchodě", "záchodem"],
+    "lednice": ["lednice", "lednici", "lednicí"],
+    "kuchyň": ["kuchyň", "kuchyně", "kuchyní", "kuchyni"],
+    "koupelna": ["koupelna", "koupelny", "koupelně", "koupelnu", "koupelnou"],
+    "ložnice": ["ložnice", "ložnici", "ložnicí"]
+}
 
 
 for i in range(0, speech_funcs.numdevices):
@@ -54,7 +56,7 @@ with speech_funcs.sr.Microphone() as source:
         data = controlAccel.GetData(micro_object)
         if data:
             if last_deg != 0:
-                d_deg = abs(int(last_deg) - int(data.replace("\n", "")))
+                d_deg = abs(int(last_deg) - int(data.replace("\n", " ")))
             last_deg = data
         
             print(d_deg)
@@ -74,8 +76,10 @@ with speech_funcs.sr.Microphone() as source:
                 print(Command_buffer)
 
                 #nějaké vyhodnocení a nalezení místnosti
-                for y_data in Desired_Data:
+                for key in Desired_Data:
+                    y_data = Desired_Data[key]
                     for data in y_data:
+                        Command_buffer = [item.lower() for item in Command_buffer]
                         if data in Command_buffer: #We found desired word!
                             word = data
 
@@ -83,6 +87,7 @@ with speech_funcs.sr.Microphone() as source:
 
                             if word == "lednice": #pro teď budeme používat jenom 1 class
                                 for key in user.TestPrezentace:
+                                    print("ano")
 
                                     loc_now = user.TestPrezentace[key][0]
                                     loc_pred = user.TestPrezentace[key][1]
@@ -124,11 +129,6 @@ with speech_funcs.sr.Microphone() as source:
 
                                 Finder = finder()
                                 position, reg_len = Finder.find()
-
-                                #convert path to spoken word
-                                #
-                                #
-                                #
 
                                 #track and repeat
                                 break

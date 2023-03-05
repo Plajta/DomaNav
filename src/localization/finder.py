@@ -1,4 +1,4 @@
-from serial_scanner import scanner
+from localization.serial_scanner import scanner
 
 class finder:
     def __init__(self,map="wifi.map"):

@@ -1,7 +1,7 @@
 import numpy as np
 import math
 from navigace.Node import node
-from graf import Graph
+from navigace.graf import Graph
 from serial import Serial
 import serial
 import serial.tools.list_ports as list_ports
