@@ -42,7 +42,7 @@ TestPrezentace = {
                     "s21" : Node.node("s11", 2, 1, "s21"),
                     "s11" : Node.node("s12", 1, 1, "s11"),
                     "s12" : Node.node("s13", 1, 2, "s12"),
-                    "s13" : Node.node("lednice", 1, 3, "s13")
+                    "s13" : Node.node("lednice", 1, 3, "s13") #s14 = lednice
                 }
 
 User.nodes = TestPrezentace
@@ -64,8 +64,9 @@ with speech_funcs.sr.Microphone() as source:
 
         data = controlAccel.GetData(micro_object)
         if data:
+            data = int(data.rstrip("\n"))
             if last_deg != 0:
-                d_deg = abs(int(last_deg) - int(float(data)))
+                d_deg = abs(int(float(last_deg)) - int(float(data))) #literally useless to do, but always drops an error about newline
             last_deg = data
         
             print(d_deg)
@@ -100,7 +101,7 @@ with speech_funcs.sr.Microphone() as source:
                                     print("ano")
 
 
-                                    loc_now = User.user.TestPrezenta3ce[key][0]
+                                    loc_now = User.user.TestPrezentace[key][0]
                                     loc_pred = User.user.TestPrezentace[key][1]
                                     u.update()
                                     u.check

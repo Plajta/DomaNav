@@ -2,6 +2,7 @@ import numpy as np
 import math
 from navigace.Node import node
 from navigace.graf import Graph
+from navigace import controlAccel
 from serial import Serial
 import serial
 import serial.tools.list_ports as list_ports
@@ -76,7 +77,9 @@ class user:
 
     def get_angle(self):
         #gets the angle from compass
-        self.ang = self.serial_read()
+        read = self.serial_read()
+        if read:
+            self.ang = read
         
     def get_node_angle(self):
         #tg^-1 (x1-x2)/(y1-y2) 
@@ -91,7 +94,8 @@ class user:
         self.get_angle()
         print(f"self angle = {self.ang}")
         
-        for point_index in self.last_point.neighbours:
+        print(self.last_point.neighbours)
+        for point_index in [self.last_point.neighbours]:
             point=self.graf._graph[point_index]
             print(point_index+": "+ str(math.sqrt(math.pow(point.x-self.x,2)+math.pow(point.y-self.y,2))))
             if math.sqrt(math.pow(point.x-self.x,2)+math.pow(point.y-self.y,2))<self.toleration:
@@ -143,22 +147,24 @@ class user:
 
 
     def serial_read(self):
-        serial = Serial()
-        serial.baudrate = 115200
-        serial.port = "COM3"
+        serial = controlAccel.find_comport(controlAccel.PID_MICROBIT, 
+                                  controlAccel.VID_MICROBIT, 115200)
+
         serial.open()
-        data = int(serial.readline().decode("ASCII"))
-        print(f"data1 = {data}")
-        data = -1*(180-(data-180))
-        #pretekajici uhly jsou sračka
-        if(data<-180):
-            data+=360
-        elif(data>180):
-            data-=360
-        
-        print(f"data2 = {data}")
-        return data
-        
+        data = serial.readline().decode("utf-8")
+        if data:
+            data = int(data.rstrip("\n"))
+            print(f"data1 = {data}")
+            data = -1*(180-(data-180))
+            #pretekajici uhly jsou sračka
+            if(data<-180):
+                data+=360
+            elif(data>180):
+                data-=360
+            
+            print(f"data2 = {data}")
+            return data
+        return None
 
 
 
