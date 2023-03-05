@@ -22,6 +22,7 @@ class finder:
     def find(self):
         loc = scanner(self.port)
         scan = loc.scan()
+        print(scan)
         out = [step.split(';') for step in scan.split('\n')]
         score = [0]*len(self.decoded_map)
         
@@ -34,6 +35,7 @@ class finder:
         
         score_sorted = score.copy()
         score_sorted.sort(reverse=True)
+        #print(score_sorted)
         rating = score_sorted[0]
 
         #           position in default array, whole len of default array
@@ -44,4 +46,4 @@ class finder:
 
 if __name__ == "__main__": # When run as a standalone module it tries to find you
     Finder = finder()
-    Finder.find()
+    print(Finder.find())

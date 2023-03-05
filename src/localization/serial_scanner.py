@@ -15,7 +15,7 @@ class scanner:
         while True:
             znak = ser.read()
             #print(znak)
-            if znak != b'@':
+            if znak != b'\x00':
                 scan_output = scan_output + str(znak.decode("ASCII"))
             else:
                 #print(scan_output.count('\n'))
@@ -31,7 +31,7 @@ class scanner:
         while True:
             znak = ser.read()
             #print(znak)
-            if znak != b'@':
+            if znak != b'\x00':
                 type = type + str(znak.decode("ASCII"))
             else:
                 #print(scan_output.count('\n'))
