@@ -18,6 +18,13 @@ import math
 #6) kontrola člověka - done
 #7) konec?
 
+TestPrezentace = {
+                    "s21" : Node.node(["s11","s13"], 3, 3, "s21"),
+                    "s11" : Node.node(["s12","s21"], 0, 3, "s11"),
+                    "s12" : Node.node(["s13"], 0, 0, "s12"),
+                    "s13" : Node.node([], 3, 0, "s13")
+                }
+
 #
 # VARIABLES
 #
@@ -39,13 +46,6 @@ Desired_Data = {
     "ložnice": ["ložnice", "ložnici", "ložnicí"]
 }
 
-TestPrezentace = {
-                    "s21" : Node.node("s11", 2, 1, "s21"),
-                    "s11" : Node.node("s12", 1, 1, "s11"),
-                    "s12" : Node.node("s13", 1, 2, "s12"),
-                    "s13" : Node.node("lednice", 1, 3, "s13") #s14 = lednice
-                }
-
 User.nodes = TestPrezentace
 
 
@@ -61,7 +61,7 @@ mapsize=5
 micro_object = controlAccel.setup()
 with speech_funcs.sr.Microphone() as source:
     speech_funcs.Recognizer.adjust_for_ambient_noise(source)
-    f = finder.finder("../../wifi.map")
+    f = finder.finder("wifi.map")
     position=[0,20]
     loc_last = [0, 0]
     while True:
@@ -101,17 +101,9 @@ with speech_funcs.sr.Microphone() as source:
                             position=f.find()
                             if word == "lednice": #pro teď budeme používat jenom 1 class
 
-
-                                TestPrezentace = {
-                                    "s21" : Node.node(["s11","s13"], 3, 3, "s21"),
-                                    "s11" : Node.node(["s12","s21"], 0, 3, "s11"),
-                                    "s12" : Node.node(["s13"], 0, 0, "s12"),
-                                    "s13" : Node.node([], 3, 0, "s13")
-                                }
                                 User.Subnotes={"lednice":Node.node(["s13"],3,0,"lednice")}
                                 u= User.user(loc_last[0],loc_last[1],0,graf.Graph(TestPrezentace),"lednice")
                                 for key in User.user.TestPrezentace:
-                                    print("ano")
 
                                     loc_now=[]
                                     loc_now[0] = math.fmod(position[0],mapsize)
@@ -131,7 +123,9 @@ with speech_funcs.sr.Microphone() as source:
                                     loc_now = User.user.TestPrezentace[key][0]
                                     loc_pred = User.user.TestPrezentace[key][1]
                                     u.update()
-                                    u.check
+                                    u.check()
+
+                                    finder.finder()
                                     """
                                     d_y1 = loc_pred[1] - loc_now[1] # - to left, + to right
                                     d_x1 = loc_pred[0] - loc_now[0]
