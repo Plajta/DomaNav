@@ -21,8 +21,8 @@ void loop() {
   while (Serial.available()){
     char command = Serial.read();
     if (command == 'p'){
-      Serial.println("wifi\n");
-      Serial.print('\0');
+      Serial.print("wifi");
+      Serial.print('@');
     }
     else if (command == 'u'){
       int n = WiFi.scanNetworks();
@@ -33,7 +33,7 @@ void loop() {
           Serial.print(WiFi.RSSI(i)+100); 
           Serial.print("\n");
           if (i == n-1){
-            Serial.print('\0');
+            Serial.print('@');
           }
         }
       }
