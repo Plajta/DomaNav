@@ -136,3 +136,5 @@ dmypy.json
 wifi.map
 port.conf
 
+src/esp-scanner/.pio
+src/esp-scanner/.vscode
